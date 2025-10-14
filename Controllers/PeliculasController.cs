@@ -37,9 +37,9 @@ namespace SitioWebDePeliculas.Controllers
             }
 
             var pelicula = await _context.Peliculas
-                .Include(p => p.Genero)                    
-                .Include(p => p.Director)                   
-                .Include(p => p.PeliculaActores)           
+                .Include(p => p.Genero)
+                .Include(p => p.Director)
+                .Include(p => p.PeliculaActores)
                  .ThenInclude(pa => pa.Actor)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (pelicula == null)
@@ -71,8 +71,8 @@ namespace SitioWebDePeliculas.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DirectorId"] = new SelectList(_context.Directores, "Id", "Id", pelicula.DirectorId);
-            ViewData["GeneroId"] = new SelectList(_context.Generos, "Id", "Id", pelicula.GeneroId);
+            ViewData["DirectorId"] = new SelectList(_context.Directores, "Id", "Nombre", pelicula.DirectorId);
+            ViewData["GeneroId"] = new SelectList(_context.Generos, "Id", "Nombre", pelicula.GeneroId);
             return View(pelicula);
         }
 
