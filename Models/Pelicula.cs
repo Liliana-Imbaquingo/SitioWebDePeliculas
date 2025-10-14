@@ -11,9 +11,9 @@ namespace SitioWebDePeliculas.Models
         public string Sinopsis { get; set; }
 
         [Display(Name = "Duración")]
-        public int Duracion {  get; set; }
+        public int Duracion { get; set; }
 
-      
+
         [Display(Name = "Fecha de Estreno")]
         public DateTime FechaEstreno { get; set; }
 
@@ -23,13 +23,13 @@ namespace SitioWebDePeliculas.Models
         [Display(Name = "Género")]
         public int GeneroId { get; set; }
         [ForeignKey("GeneroId")]
-        public Genero Genero { get; set; }
+        public Genero? Genero { get; set; }
 
 
         [Display(Name = "Director")]
         public int DirectorId { get; set; }
         [ForeignKey("DirectorId")]
-        public Director Director { get; set; }
+        public Director? Director { get; set; }
 
         [ValidateNever]
         public ICollection<PeliculaActor> PeliculaActores { get; set; }
