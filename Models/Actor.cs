@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace SitioWebDePeliculas.Models
 {
@@ -12,7 +13,7 @@ namespace SitioWebDePeliculas.Models
         [Display(Name = "Fecha de Nacimiento")]
         public DateTime FechaNacimiento { get; set; }
 
-        //[ValidateNever]
+        [ValidateNever]
         public ICollection<PeliculaActor> PeliculaActores { get; set; }
     }
 }
