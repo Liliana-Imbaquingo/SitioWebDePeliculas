@@ -1,0 +1,73 @@
+﻿@model SitioWebDePeliculas.Models.Genero
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Genero</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Descripcion)
+        </dd>
+    </dl>
+</div>
+
+<h4>Películas de este género</h4>
+
+@if (Model.Peliculas != null && Model.Peliculas.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Director</th>
+                <th>Fecha de Estreno</th>
+                <th>Duración</th>
+                <th>Actores</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in Model.Peliculas)
+            {
+                <tr>
+                    <td>@p.Titulo</td>
+                    <td>@p.Director.Nombre</td>
+                    <td>@p.FechaEstreno.ToShortDateString()</td>
+                    <td>@p.Duracion min</td>
+                    <td>
+                        @if (p.PeliculaActores != null && p.PeliculaActores.Any())
+                        {
+                            @string.Join(", ", p.PeliculaActores.Select(pa => pa.Actor.Nombre))
+                        }
+                        else
+                        {
+                            <span>No registrado</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No hay películas registradas en este género.</p>
+}
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
