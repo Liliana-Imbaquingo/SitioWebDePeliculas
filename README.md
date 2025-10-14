@@ -15,11 +15,10 @@ Aplicación ASP.NET Core MVC para gestionar **Películas, Actores, Directores y 
 ## ⚙️ Configuración inicial
 
 1. Clona este repositorio:
+
    ```bash
    git clone https://github.com/Liliana-Imbaquingo/SitioWebDePeliculas
    ```
-
-````
 
 2. Ingresa a la carpeta del proyecto:
 
@@ -90,4 +89,3 @@ Views/
 - Entity Framework Core
 - SQL Server LocalDB
 - Bootstrap 5
-````
