@@ -44,13 +44,13 @@
             @Html.DisplayNameFor(model => model.Genero)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Genero.Nombre)
+            @if (Model.Genero != null) { @Model.Genero.Nombre }
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Director)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Director.Nombre)
+            @if (Model.Director != null) { @Model.Director.Nombre }
         </dd>
     </dl>
 </div>
