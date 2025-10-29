@@ -50,20 +50,19 @@
             {
                 <tr>
                     <td>@p.Titulo</td>
-                    <td>@p.Genero.Nombre</td>
+                    <td>@(p.Genero != null ? p.Genero.Nombre : "-")</td>
                     <td>@p.FechaEstreno.ToShortDateString()</td>
                     <td>@p.Duracion min</td>
                     <td>
                         @if (p.PeliculaActores != null && p.PeliculaActores.Any())
                         {
-                            @string.Join(", ", p.PeliculaActores.Select(pa => pa.Actor.Nombre))
+                            @string.Join(", ", p.PeliculaActores.Select(pa => pa.Actor != null ? pa.Actor.Nombre : "-"))
                         }
                         else
                         {
                             <span>No registrado</span>
                         }
                     </td>
-
                 </tr>
             }
         </tbody>

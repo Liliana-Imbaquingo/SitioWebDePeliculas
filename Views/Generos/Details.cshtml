@@ -44,13 +44,13 @@
             {
                 <tr>
                     <td>@p.Titulo</td>
-                    <td>@p.Director.Nombre</td>
+                    <td>@(p.Director != null ? p.Director.Nombre : "-")</td>
                     <td>@p.FechaEstreno.ToShortDateString()</td>
                     <td>@p.Duracion min</td>
                     <td>
                         @if (p.PeliculaActores != null && p.PeliculaActores.Any())
                         {
-                            @string.Join(", ", p.PeliculaActores.Select(pa => pa.Actor.Nombre))
+                            @string.Join(", ", p.PeliculaActores.Select(pa => pa.Actor != null ? pa.Actor.Nombre : "-"))
                         }
                         else
                         {

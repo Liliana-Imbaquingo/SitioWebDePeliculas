@@ -1,10 +1,41 @@
 ﻿@model IEnumerable<SitioWebDePeliculas.Models.Pelicula>
-
+@using Microsoft.AspNetCore.Mvc.Rendering;
 @{
     ViewData["Title"] = "Index";
+    var generos = ViewData["Generos"] as SelectList;
+    var currentGenero = ViewData["CurrentGenero"] as int?;
+    var currentFilter = ViewData["CurrentFilter"] as string;
 }
 
 <h1>Películas</h1>
+
+<form asp-action="Index" method="get" class="mb-3 row g-2 align-items-end">
+    <div class="col-auto">
+        <input type="text" name="searchString" value="@currentFilter" class="form-control" placeholder="Buscar por título..." />
+    </div>
+    <div class="col-auto">
+        <select name="generoId" class="form-select">
+            <option value="">Todos los géneros</option>
+            @if (generos != null)
+            {
+                foreach (var genero in generos)
+                {
+                    if (currentGenero != null && (int)currentGenero == int.Parse(genero.Value))
+                    {
+                        <option value="@genero.Value" selected>@genero.Text</option>
+                    }
+                    else
+                    {
+                        <option value="@genero.Value">@genero.Text</option>
+                    }
+                }
+            }
+        </select>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Filtrar</button>
+    </div>
+</form>
 
 <p>
     <a asp-action="Create">Nueva Película</a>
@@ -55,13 +86,22 @@
                 @Html.DisplayFor(modelItem => item.FechaEstreno)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ImagenRuta)
+                @if (!string.IsNullOrEmpty(item.ImagenRuta))
+                {
+                    <img src="~/@item.ImagenRuta" alt="Portada" style="max-width:80px;max-height:80px;" />
+                }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Genero.Nombre)
+                @if (item.Genero != null)
+                {
+                    @item.Genero.Nombre
+                }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Director.Nombre)
+                @if (item.Director != null)
+                {
+                    @item.Director.Nombre
+                }
             </td>
                 <td>
                     @if (item.PeliculaActores != null && item.PeliculaActores.Any())
