@@ -16,12 +16,12 @@ namespace SitioWebDePeliculas.Controllers
     public class PeliculasController : Controller
     {
         private readonly AppDbContext _context;
-        private readonly IWebHostEnvironment _webHostEnvironment;
+        
 
-        public PeliculasController(AppDbContext context, IWebHostEnvironment webHostEnvironment)
+        public PeliculasController(AppDbContext context)
         {
             _context = context;
-            _webHostEnvironment = webHostEnvironment;
+            
         }
 
         // GET: Peliculas
@@ -79,23 +79,22 @@ namespace SitioWebDePeliculas.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Titulo,Sinopsis,Duracion,FechaEstreno,GeneroId,DirectorId")] Pelicula pelicula, IFormFile Imagen)
+        [ValidateAntiForgeryToken]        
+        public async Task<IActionResult> Create( Pelicula pelicula)
+
         {
             if (ModelState.IsValid)
             {
-                if (Imagen != null && Imagen.Length > 0)
+                if (pelicula.ImagenArchivo != null && pelicula.ImagenArchivo.Length > 0)
                 {
-                    var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "img");
-                    if (!Directory.Exists(uploadsFolder))
-                        Directory.CreateDirectory(uploadsFolder);
-                    var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(Imagen.FileName);
-                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    var nombreArchivo = Guid.NewGuid().ToString() + Path.GetExtension(pelicula.ImagenArchivo.FileName);
+                    var ruta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagenes", nombreArchivo);
+                    using (var stream = new FileStream(ruta, FileMode.Create))
                     {
-                        await Imagen.CopyToAsync(fileStream);
+                        await pelicula.ImagenArchivo.CopyToAsync(stream);
                     }
-                    pelicula.ImagenRuta = Path.Combine("img", uniqueFileName).Replace("\\", "/");
+
+                    pelicula.ImagenRuta = "/imagenes/" + nombreArchivo;
                 }
                 _context.Add(pelicula);
                 await _context.SaveChangesAsync();
@@ -129,29 +128,49 @@ namespace SitioWebDePeliculas.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,Sinopsis,Duracion,FechaEstreno,ImagenRuta,GeneroId,DirectorId")] Pelicula pelicula, IFormFile Imagen)
+        public async Task<IActionResult> Edit(int id, Pelicula pelicula)
         {
             if (id != pelicula.Id)
             {
                 return NotFound();
             }
 
+            //Recuperar la película original para obtener la ruta de la imagen actual
+            var peliculaExistente = await _context.Peliculas.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+            if(peliculaExistente == null)
+                return NotFound();
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    if (Imagen != null && Imagen.Length > 0)
+                    if (pelicula.ImagenArchivo != null && pelicula.ImagenArchivo.Length > 0)
                     {
-                        var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "img");
-                        if (!Directory.Exists(uploadsFolder))
-                            Directory.CreateDirectory(uploadsFolder);
-                        var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(Imagen.FileName);
-                        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+
+                        //Eliminar la imagen anterior si existe
+                        if(!string.IsNullOrEmpty(peliculaExistente.ImagenRuta))
                         {
-                            await Imagen.CopyToAsync(fileStream);
+                            var rutaAnterior = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", peliculaExistente.ImagenRuta.TrimStart('/'));
+                            if (System.IO.File.Exists(rutaAnterior))
+                            {
+                                System.IO.File.Delete(rutaAnterior);
+                            }
                         }
-                        pelicula.ImagenRuta = Path.Combine("img", uniqueFileName).Replace("\\", "/");
+
+                        //Guardar la nueva imagen
+                        var nombreArchivo = Guid.NewGuid().ToString() + Path.GetExtension(pelicula.ImagenArchivo.FileName);
+                        var ruta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagenes", nombreArchivo);
+
+                        using (var stream = new FileStream(ruta, FileMode.Create))
+                        {
+                            await pelicula.ImagenArchivo.CopyToAsync(stream);
+                        }
+                        pelicula.ImagenRuta = "/imagenes/" + nombreArchivo;
+                     
+                    }
+                    else
+                    {
+                        pelicula.ImagenRuta = peliculaExistente.ImagenRuta;
                     }
                     _context.Update(pelicula);
                     await _context.SaveChangesAsync();
@@ -169,8 +188,8 @@ namespace SitioWebDePeliculas.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DirectorId"] = new SelectList(_context.Directores, "Id", "Id", pelicula.DirectorId);
-            ViewData["GeneroId"] = new SelectList(_context.Generos, "Id", "Id", pelicula.GeneroId);
+            ViewData["DirectorId"] = new SelectList(_context.Directores, "Id", "Nombre", pelicula.Director);
+            ViewData["GeneroId"] = new SelectList(_context.Generos, "Id", "Nombre", pelicula.Genero);
             return View(pelicula);
         }
 
@@ -202,6 +221,14 @@ namespace SitioWebDePeliculas.Controllers
             var pelicula = await _context.Peliculas.FindAsync(id);
             if (pelicula != null)
             {
+                if(!string.IsNullOrEmpty(pelicula.ImagenRuta))
+                {
+                    var rutaCompleta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", pelicula.ImagenRuta.TrimStart('/'));
+                    if(System.IO.File.Exists(rutaCompleta))
+                    {
+                        System.IO.File.Delete(rutaCompleta);
+                    }
+                }
                 _context.Peliculas.Remove(pelicula);
             }
 

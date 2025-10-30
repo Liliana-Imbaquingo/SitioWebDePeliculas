@@ -7,11 +7,11 @@ namespace SitioWebDePeliculas.Models
     {
 
         public int Id { get; set; }
-        [Required]
-        [StringLength(50)]
+        [Required(ErrorMessage = "El nombre es obligatorio.")]
+        [StringLength(500, ErrorMessage = "El Nombre no puede tener más de 50 caracteres.")]
         public string Nombre { get; set; }
-        [Required]
-        [StringLength(200)]
+        [Required(ErrorMessage = "La Descripción es obligatoria.")]
+        [StringLength(200, ErrorMessage = "La Descripción no puede tener más de 200 caracteres.")]
         public string Descripcion { get; set; }
 
         //Relacion 1-N

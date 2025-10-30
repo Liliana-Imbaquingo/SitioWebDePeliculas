@@ -1,5 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using SitioWebDePeliculas.Models.Validations;
+using System.ComponentModel.DataAnnotations;
 
 namespace SitioWebDePeliculas.Models
 {
@@ -7,17 +8,18 @@ namespace SitioWebDePeliculas.Models
     {
         public int Id { get; set; }
         
-        [Required]
-        [StringLength(100)]
+        [Required(ErrorMessage = "El Nombre es obligatorio.")]
+        [StringLength(100, ErrorMessage = "El Nombre no puede tener más de 100 caracteres.")]
         public string Nombre { get; set; }
-        
-        [Required]
-        [StringLength(500)]
+
+        [Required(ErrorMessage = "La Biografía es obligatoria.")]
+        [StringLength(800, ErrorMessage = "La Biografía no puede superar los 800 caracteres.")]
+        [Display(Name = "Biografía")]
         public string Biografia { get; set; }
-        
-        [Required]
+        [Required(ErrorMessage = "La Fecha de Nacimiento es obligatoria.")]
         [DataType(DataType.Date)]
         [Display(Name = "Fecha de Nacimiento")]
+        [NoFuture(ErrorMessage = "La Fecha de Nacimiento no puede ser mayor a la fecha actual.")]
         public DateTime FechaNacimiento { get; set; }
 
         [ValidateNever]

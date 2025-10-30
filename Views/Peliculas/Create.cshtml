@@ -4,9 +4,9 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Crear</h1>
 
-<h4>Pelicula</h4>
+<h4>Película</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -32,11 +32,7 @@
                 <input asp-for="FechaEstreno" class="form-control" />
                 <span asp-validation-for="FechaEstreno" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ImagenRuta" class="control-label"></label>
-                <input type="file" name="Imagen" class="form-control" accept="image/*" />
-                <span asp-validation-for="ImagenRuta" class="text-danger"></span>
-            </div>
+            
             <div class="form-group">
                 <label asp-for="GeneroId" class="control-label"></label>
                 <select asp-for="GeneroId" class ="form-control" asp-items="ViewBag.GeneroId"></select>
@@ -44,6 +40,10 @@
             <div class="form-group">
                 <label asp-for="DirectorId" class="control-label"></label>
                 <select asp-for="DirectorId" class ="form-control" asp-items="ViewBag.DirectorId"></select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Póster de la película</label>
+                <input type="file" aspo-for="ImagenArchivo" name="ImagenArchivo" class="form-control" />
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

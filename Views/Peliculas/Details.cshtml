@@ -4,10 +4,10 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Detalle</h1>
 
 <div>
-    <h4>Pelicula</h4>
+    <h4>Película</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -34,12 +34,7 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.FechaEstreno)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImagenRuta)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImagenRuta)
-        </dd>
+        
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Genero)
         </dt>
@@ -52,23 +47,44 @@
         <dd class = "col-sm-10">
             @if (Model.Director != null) { @Model.Director.Nombre }
         </dd>
+        <dt class="col-sm-2">
+            <div>
+                <p>Póster</p>
+            </div>
+        </dt>
+        <dd class="col-sm-10">
+            @if (!string.IsNullOrEmpty(Model.ImagenRuta))
+            {
+                <div class="form-group">
+                    
+                    <img src="@Model.ImagenRuta" alt="Póster actual" style="width:100px;height:auto" />
+                </div>
+            }
+        </dd>
+        <dt class="col-sm-2">
+            <div>
+                <p>Actores</p>
+            </div>
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.PeliculaActores != null && Model.PeliculaActores.Any())
+            {
+                
+                    @foreach (var pa in Model.PeliculaActores)
+                    {
+                        <p>@pa.Actor.Nombre</p>
+                    }
+                
+            }
+            else
+            {
+                <p>No hay actores registrados para esta película.</p>
+            }
+        </dd>
     </dl>
 </div>
 
-<h4>Actores</h4>
-@if (Model.PeliculaActores != null && Model.PeliculaActores.Any())
-{
-    <ul>
-        @foreach (var pa in Model.PeliculaActores)
-        {
-            <li>@pa.Actor.Nombre</li>
-        }
-    </ul>
-}
-else
-{
-    <p>No hay actores registrados para esta película.</p>
-}
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
