@@ -43,7 +43,9 @@
             @foreach (var p in Model.Peliculas)
             {
                 <tr>
-                    <td>@p.Titulo</td>
+                    <td>
+                        <a class="text-decoration-none" asp-controller="Peliculas" asp-action="Details" asp-route-id="@p.Id">@p.Titulo</a>
+                    <td>
                     <td>@(p.Director != null ? p.Director.Nombre : "-")</td>
                     <td>@p.FechaEstreno.ToShortDateString()</td>
                     <td>@p.Duracion min</td>

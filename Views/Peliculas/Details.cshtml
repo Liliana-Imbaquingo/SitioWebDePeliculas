@@ -39,13 +39,19 @@
             @Html.DisplayNameFor(model => model.Genero)
         </dt>
         <dd class = "col-sm-10">
-            @if (Model.Genero != null) { @Model.Genero.Nombre }
+            @if (Model.Genero != null)
+            {
+                <a class="text-decoration-none  " asp-controller="Generos" asp-action="Details" asp-route-id="@Model.Genero.Id">@Model.Genero.Nombre </a>
+            }
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Director)
         </dt>
         <dd class = "col-sm-10">
-            @if (Model.Director != null) { @Model.Director.Nombre }
+            @if (Model.Director != null)
+            {
+                <a class="text-decoration-none" asp-controller="Directores" asp-action="Details" asp-route-id="@Model.Director.Id">@Model.Director.Nombre </a>
+            }
         </dd>
         <dt class="col-sm-2">
             <div>
@@ -73,7 +79,7 @@
                     @foreach (var pa in Model.PeliculaActores)
                     {
                        <li>
-                            <a asp-controller="Actores" asp-action="Details" asp-route-id="@pa.Actor.Id">
+                            <a class="text-decoration-none" asp-controller="Actores" asp-action="Details" asp-route-id="@pa.Actor.Id">
                             @pa.Actor.Nombre
                             </a>
                         </li>
@@ -90,6 +96,6 @@
 
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a> |
     <a asp-action="Index">Ir a Lista de Películas</a>
 </div>

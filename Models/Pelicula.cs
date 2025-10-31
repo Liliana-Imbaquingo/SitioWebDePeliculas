@@ -28,10 +28,10 @@ namespace SitioWebDePeliculas.Models
         [ValidateNever]
 
         [Required(ErrorMessage = "El Género es obligatorio.")]
-        [Display(Name = "Género")]
+        
         public int GeneroId { get; set; }
         [ForeignKey("GeneroId")]
-        
+        [Display(Name = "Género")]
         public Genero? Genero { get; set; }
         [Required(ErrorMessage = "El Director es obligatorio.")]
         [Display(Name = "Director")]

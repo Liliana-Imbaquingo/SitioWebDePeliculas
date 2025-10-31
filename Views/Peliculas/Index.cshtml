@@ -96,19 +96,30 @@
             <td>
                 @if (item.Genero != null)
                 {
-                    @item.Genero.Nombre
+                    <a class="text-decoration-none  " asp-controller="Generos" asp-action="Details" asp-route-id="@item.Genero.Id">@item.Genero.Nombre</a>
                 }
             </td>
             <td>
                 @if (item.Director != null)
                 {
-                    @item.Director.Nombre
+                     <a class="text-decoration-none  " asp-controller="Directores" asp-action="Details" asp-route-id="@item.Director.Id">@item.Director.Nombre</a>
                 }
             </td>
                 <td>
                     @if (item.PeliculaActores != null && item.PeliculaActores.Any())
                     {
-                        @string.Join(", ", item.PeliculaActores.Select(pa => pa.Actor.Nombre))
+                        @foreach (var pa in item.PeliculaActores)
+                        {
+                            <a class="text-decoration-none" asp-controller="Actores" asp-action="Details" asp-route-id="@pa.ActorId">
+                                @pa.Actor.Nombre
+                            </a>
+
+                            @if (pa != item.PeliculaActores.Last())
+                            {
+                                @:,&nbsp;
+                            }
+                        }
+
                     }
                     else
                     {
