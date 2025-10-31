@@ -12,6 +12,7 @@ namespace SitioWebDePeliculas.Models
         public string Nombre { get; set; }
         [Required(ErrorMessage = "La Descripción es obligatoria.")]
         [StringLength(200, ErrorMessage = "La Descripción no puede tener más de 200 caracteres.")]
+        [Display(Name = "Descripción")]
         public string Descripcion { get; set; }
 
         //Relacion 1-N

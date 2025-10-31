@@ -16,7 +16,7 @@ namespace SitioWebDePeliculas.Models
         [StringLength(800, ErrorMessage = "El nombre no puede tener más de 800 caracteres.")]
         public string Sinopsis { get; set; }
         [Required(ErrorMessage = "La Duración(minutos) es obligatoria.")]
-        [Range(1, 500)]
+        [Range(1, 500,ErrorMessage = "El tiempo de duración debe estar entre 1 y 500 mminutos.")]
         [Display(Name = "Duración(min)")]
         public int Duracion { get; set; }
         [Required(ErrorMessage = "La Fecha de Estreno es obligatoria.")]
@@ -44,7 +44,7 @@ namespace SitioWebDePeliculas.Models
         [NotMapped]
         public IFormFile? ImagenArchivo { get; set; }
         [ValidateNever]
-        public ICollection<PeliculaActor> PeliculaActores { get; set; }
+        public ICollection<PeliculaActor> PeliculaActores { get; set; } = new List<PeliculaActor>();
 
     }
 }

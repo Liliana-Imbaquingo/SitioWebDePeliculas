@@ -1,71 +1,92 @@
-﻿@model SitioWebDePeliculas.Models.Pelicula
+﻿@model SitioWebDePeliculas.Models.ViewModels.PeliculaCreacionViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar";
 }
 
-<h1>Edita</h1>
+<h1>Editar</h1>
 
 <h4>Película</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit" enctype="multipart/form-data">
+        <form asp-action="Edit" enctype="multipart/form-data" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Pelicula.Id" />
             <div class="form-group">
-                <label asp-for="Titulo" class="control-label"></label>
-                <input asp-for="Titulo" class="form-control" />
-                <span asp-validation-for="Titulo" class="text-danger"></span>
+                <label asp-for="Pelicula.Titulo" class="control-label"></label>
+                <input asp-for="Pelicula.Titulo" class="form-control" />
+                <span asp-validation-for="Pelicula.Titulo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Sinopsis" class="control-label"></label>
-                <input asp-for="Sinopsis" class="form-control" />
-                <span asp-validation-for="Sinopsis" class="text-danger"></span>
+                <label asp-for="Pelicula.Sinopsis" class="control-label"></label>
+                <input asp-for="Pelicula.Sinopsis" class="form-control" />
+                <span asp-validation-for="Pelicula.Sinopsis" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Duracion" class="control-label"></label>
-                <input asp-for="Duracion" class="form-control" />
-                <span asp-validation-for="Duracion" class="text-danger"></span>
+                <label asp-for="Pelicula.Duracion" class="control-label"></label>
+                <input asp-for="Pelicula.Duracion" class="form-control" />
+                <span asp-validation-for="Pelicula.Duracion" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="FechaEstreno" class="control-label"></label>
-                <input asp-for="FechaEstreno" class="form-control" />
-                <span asp-validation-for="FechaEstreno" class="text-danger"></span>
+                <label asp-for="Pelicula.FechaEstreno" class="control-label"></label>
+                <input asp-for="Pelicula.FechaEstreno" class="form-control" />
+                <span asp-validation-for="Pelicula.FechaEstreno" class="text-danger"></span>
             </div>
             <div class="form-group">
             
             <div class="form-group">
-                <label asp-for="GeneroId" class="control-label"></label>
-                <select asp-for="GeneroId" class="form-control" asp-items="ViewBag.GeneroId"></select>
-                <span asp-validation-for="GeneroId" class="text-danger"></span>
+                    <label asp-for="Pelicula.GeneroId" class="control-label"></label>
+                    <select asp-for="Pelicula.GeneroId" class="form-control" asp-items="ViewBag.GeneroId"></select>
+                    <span asp-validation-for="Pelicula.GeneroId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DirectorId" class="control-label"></label>
-                <select asp-for="DirectorId" class="form-control" asp-items="ViewBag.DirectorId"></select>
-                <span asp-validation-for="DirectorId" class="text-danger"></span>
+                    <label asp-for="Pelicula.DirectorId" class="control-label"></label>
+                    <select asp-for="Pelicula.DirectorId" class="form-control" asp-items="ViewBag.DirectorId"></select>
+                    <span asp-validation-for="Pelicula.DirectorId" class="text-danger"></span>
             </div>
-            @if(!string.IsNullOrEmpty(Model.ImagenRuta))
+            <div class="form-group">
+                <label>Actores</label>
+                <select asp-for="ActoresSeleccionadosIds"
+                        asp-items="Model.ActoresDisponibles"
+                        multiple
+                        class="form-control actores-select">
+                </select>
+            </div>
+                @if (!string.IsNullOrEmpty(Model.Pelicula.ImagenRuta))
                 {
                     <div class="form-group">
                         <label>Póster actual:</label><br/>
-                        <img src="@Model.ImagenRuta" alt="Póster actual" style="width:100px;height:auto;">
+                        <img src="@Model.Pelicula.ImagenRuta" alt="Póster actual" style="width:100px;height:auto;">
                     </div>
                 }
                 <label class="control-label">Cambiar Póster</label>
-                <input type="file" aspo-for="ImagenArchivo" name="ImagenArchivo" class="form-control" />
+                <input type="file" asp-for="Pelicula.ImagenArchivo" name="Pelicula.ImagenArchivo" class="form-control" />
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Guardar" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Ir a Lista de Películas</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.actores-select').select2({
+                placeholder: "Selecciona uno o varios actores",
+                width: '100%',
+                allowClear: true
+            });
+        });
+    </script>
+
 }

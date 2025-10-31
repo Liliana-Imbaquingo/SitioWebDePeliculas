@@ -34,7 +34,10 @@ namespace SitioWebDePeliculas.Controllers
             }
 
             var actor = await _context.Actores
-                .FirstOrDefaultAsync(m => m.Id == id);
+            .Include(a => a.PeliculaActores)
+            .ThenInclude(pa => pa.Pelicula)
+            .FirstOrDefaultAsync(a => a.Id == id);
+
             if (actor == null)
             {
                 return NotFound();
@@ -86,7 +89,7 @@ namespace SitioWebDePeliculas.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Biografia,FechaNacimiento")] Actor actor)
+        public async Task<IActionResult> Edit(int id, Actor actor)
         {
             if (id != actor.Id)
             {
@@ -125,7 +128,10 @@ namespace SitioWebDePeliculas.Controllers
             }
 
             var actor = await _context.Actores
-                .FirstOrDefaultAsync(m => m.Id == id);
+                   .Include(a => a.PeliculaActores)
+                   .ThenInclude(pa => pa.Pelicula)
+                   .FirstOrDefaultAsync(a => a.Id == id);
+
             if (actor == null)
             {
                 return NotFound();
@@ -139,9 +145,18 @@ namespace SitioWebDePeliculas.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var actor = await _context.Actores.FindAsync(id);
+            var actor = await _context.Actores
+            .Include(a => a.PeliculaActores)
+            .FirstOrDefaultAsync(a => a.Id == id);
+
             if (actor != null)
             {
+                //  Eliminar relaciones Actor - Película
+                if (actor.PeliculaActores != null && actor.PeliculaActores.Any())
+                {
+                    _context.PeliculaActores.RemoveRange(actor.PeliculaActores);
+                }
+
                 _context.Actores.Remove(actor);
             }
 

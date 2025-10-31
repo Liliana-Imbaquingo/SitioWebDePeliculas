@@ -69,12 +69,16 @@
         <dd class="col-sm-10">
             @if (Model.PeliculaActores != null && Model.PeliculaActores.Any())
             {
-                
+                <ul>
                     @foreach (var pa in Model.PeliculaActores)
                     {
-                        <p>@pa.Actor.Nombre</p>
-                    }
-                
+                       <li>
+                            <a asp-controller="Actores" asp-action="Details" asp-route-id="@pa.Actor.Id">
+                            @pa.Actor.Nombre
+                            </a>
+                        </li>
+                    }       
+                </ul>
             }
             else
             {
@@ -87,5 +91,5 @@
 
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Ir a Lista de Películas</a>
 </div>

@@ -23,6 +23,6 @@ namespace SitioWebDePeliculas.Models
         public DateTime FechaNacimiento { get; set; }
 
         [ValidateNever]
-        public ICollection<PeliculaActor> PeliculaActores { get; set; }
+        public ICollection<PeliculaActor> PeliculaActores { get; set; }  = new List<PeliculaActor>();
     }
 }

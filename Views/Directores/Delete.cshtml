@@ -5,10 +5,11 @@
 }
 
 <h1>Eliminar</h1>
+<h4>Director</h4>
+
 
 <h3>¿Está seguro de eliminar este director?</h3>
 <div>
-    <h4>Director</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -33,7 +34,7 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+        <a asp-action="Index">Ir a Lista de Directores</a>
     </form>
 </div>
